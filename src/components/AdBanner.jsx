@@ -1,9 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Megaphone } from "lucide-react";
 
 /**
  * AdBanner Component
- * Displays Google AdSense ads with placeholder functionality
+ * Displays Google AdSense ads with proper initialization tracking
  * @param {Object} props - Component props
  * @param {string} props.clientId - Google AdSense client ID (placeholder: ca-pub-xxxxxxxxxxxxxx)
  * @param {string} props.slot - Ad slot ID
@@ -18,6 +18,9 @@ const AdBanner = ({
   style = "display:block",
   className = "",
 }) => {
+  const adRef = useRef(null);
+  const isInitialized = useRef(false);
+
   useEffect(() => {
     // Check if AdSense script is already loaded globally
     const existingScript = document.querySelector('script[src*="adsbygoogle.js"]');
@@ -38,29 +41,35 @@ const AdBanner = ({
   }, [clientId]);
 
   useEffect(() => {
-    // Initialize ads after component mounts and ensure proper client-side rendering
+    // Initialize ads only once per component instance
     const initializeAds = () => {
-      if (window.adsbygoogle) {
-        try {
-          // Force re-initialization for client-side rendering
-          (window.adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-          console.log("AdSense initialization error:", e);
+      if (isInitialized.current || !window.adsbygoogle || !adRef.current) {
+        return;
+      }
+
+      try {
+        // Check if this specific ad element already has ads
+        const adElement = adRef.current.querySelector('.adsbygoogle');
+        if (adElement && adElement.dataset.adStatus) {
+          return; // Already initialized
         }
-      } else {
-        // Retry after a short delay if adsbygoogle is not ready
-        setTimeout(initializeAds, 100);
+
+        // Initialize only this specific ad
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+        isInitialized.current = true;
+      } catch (e) {
+        console.log("AdSense initialization error:", e);
       }
     };
 
-    // Initialize immediately and also after a delay to ensure proper loading
-    initializeAds();
-    setTimeout(initializeAds, 500);
+    // Wait for the ad element to be rendered
+    const timer = setTimeout(initializeAds, 100);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <div className={`w-full flex justify-center my-8 ${className}`}>
-      <div className="w-full max-w-4xl">
+      <div className="w-full max-w-4xl" ref={adRef}>
         <ins
           className="adsbygoogle"
           style={{
