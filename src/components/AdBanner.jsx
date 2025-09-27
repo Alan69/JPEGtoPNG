@@ -38,14 +38,24 @@ const AdBanner = ({
   }, [clientId]);
 
   useEffect(() => {
-    // Initialize ads after component mounts
-    if (window.adsbygoogle) {
-      try {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      } catch (e) {
-        console.log("AdSense error:", e);
+    // Initialize ads after component mounts and ensure proper client-side rendering
+    const initializeAds = () => {
+      if (window.adsbygoogle) {
+        try {
+          // Force re-initialization for client-side rendering
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (e) {
+          console.log("AdSense initialization error:", e);
+        }
+      } else {
+        // Retry after a short delay if adsbygoogle is not ready
+        setTimeout(initializeAds, 100);
       }
-    }
+    };
+
+    // Initialize immediately and also after a delay to ensure proper loading
+    initializeAds();
+    setTimeout(initializeAds, 500);
   }, []);
 
   return (
@@ -55,6 +65,7 @@ const AdBanner = ({
           className="adsbygoogle"
           style={{
             display: "block",
+            minHeight: "250px",
             ...(typeof style === "string" ? {} : style),
           }}
           data-ad-client={clientId}
