@@ -12,8 +12,8 @@ import { Megaphone } from "lucide-react";
  * @param {string} props.className - Additional CSS classes
  */
 const AdBanner = ({
-  clientId = "pub-2683644405766097",
-  slot = "9300321204",
+  clientId = "pub-6354681495028216",
+  slot = "9819433163",
   format = "auto",
   style = "display:block",
   className = "",

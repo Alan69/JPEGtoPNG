@@ -292,8 +292,8 @@ function App() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Ad Banner - Top */}
         <AdBanner
-          clientId="pub-2683644405766097"
-          slot="9300321204"
+          clientId="pub-6354681495028216"
+          slot="9819433163"
           className="mb-12"
         />
 
@@ -452,8 +452,8 @@ function App() {
             {/* Ad Banner - Bottom */}
             <div className="sticky bottom-0 z-40 w-full bg-white/80 backdrop-blur-md py-4 border-t border-gray-200/50 shadow-lg">
               <AdBanner
-                clientId="pub-2683644405766097"
-                slot="9300321204"
+                clientId="pub-6354681495028216"
+                slot="9819433163"
                 className="max-w-7xl mx-auto"
               />
             </div>
