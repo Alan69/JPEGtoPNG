@@ -54,18 +54,35 @@ const AdBanner = ({
           return; // Already initialized
         }
 
+        // Add debugging information
+        console.log('Initializing AdSense ad:', {
+          clientId,
+          slot,
+          format,
+          url: window.location.href
+        });
+
         // Initialize only this specific ad
         (window.adsbygoogle = window.adsbygoogle || []).push({});
         isInitialized.current = true;
+        
+        console.log('AdSense ad initialized successfully');
       } catch (e) {
-        console.log("AdSense initialization error:", e);
+        console.error("AdSense initialization error:", e);
+        console.log('AdSense debug info:', {
+          clientId,
+          slot,
+          format,
+          url: window.location.href,
+          userAgent: navigator.userAgent
+        });
       }
     };
 
     // Wait for the ad element to be rendered
     const timer = setTimeout(initializeAds, 100);
     return () => clearTimeout(timer);
-  }, []);
+  }, [clientId, slot, format]);
 
   return (
     <div className={`w-full flex justify-center my-8 ${className}`}>
