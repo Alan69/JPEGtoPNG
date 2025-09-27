@@ -13,7 +13,7 @@ import { Megaphone } from "lucide-react";
  */
 const AdBanner = ({
   clientId = "ca-pub-6354681495028216",
-  slot = "9819433163",
+  slot = "3909950379",
   format = "auto",
   style = "display:block",
   className = "",
