@@ -12,17 +12,21 @@ import { Megaphone } from "lucide-react";
  * @param {string} props.className - Additional CSS classes
  */
 const AdBanner = ({
-  clientId = "pub-6354681495028216",
+  clientId = "ca-pub-6354681495028216",
   slot = "9819433163",
   format = "auto",
   style = "display:block",
   className = "",
 }) => {
   useEffect(() => {
-    // Load Google AdSense script
-    const loadAdSense = () => {
-      if (window.adsbygoogle) return; // Already loaded
+    // Check if AdSense script is already loaded globally
+    const existingScript = document.querySelector('script[src*="adsbygoogle.js"]');
+    if (existingScript || window.adsbygoogle) {
+      return; // Script already loaded globally
+    }
 
+    // Only load script if not already present
+    const loadAdSense = () => {
       const script = document.createElement("script");
       script.async = true;
       script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${clientId}`;
